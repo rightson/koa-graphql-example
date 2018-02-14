@@ -15,11 +15,12 @@ const DB_URI = `mongodb://${DB_CREDENTIAL}localhost:27017/${DB_NAME}`
 const UI_ROOT = process.env.UI_ROOT || Path.join(__dirname, '../ui/dist')
 
 
-let db = Mongoose.connection;
+const db = Mongoose.connection;
 db.on('error', () => { console.log(`Failed to connect to ${DB_URI}`); process.exit(-1) })
 db.once('open', () => console.log(`+++ Connected to MongoDB +++`))
 Mongoose.connect(DB_URI)
 Mongoose.set('debug', NODE_ENV !== 'production');
+
 
 const router = new Router();
 
@@ -31,6 +32,7 @@ router.all('/graphql', GraphqlHTTP({
 router.get('*', ctx => {
 	ctx.body = '<h1>404 Page Not Found : (</h1>'
 })
+
 
 const app = new Koa();
 
